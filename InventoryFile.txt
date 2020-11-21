@@ -1,10 +1,10 @@
-shelf stable milk/50
-mac & cheese/20
-baked beans/30
-ramen/20
-peanut butter/30
-jelly/23
-spaghetti/43
-tuna/43
-apple sauce/41
-pads/30
+shelf stable milk;50
+mac & cheese;20
+baked beans;30
+ramen;20
+peanut butter;30
+jelly;23
+spaghetti;43
+tuna;43
+apple sauce;41
+pads;30
