@@ -1,14 +1,6 @@
 import tkinter as tk
 
 # ReadInventory.py
-amountFile = open("InventoryFile.txt", "r")
-allLines = amountFile.read().split("\n")
-inventory = {}
-for i in allLines:
-	eachLine = i.split(";")
-	if (len(eachLine) == 2):
-		inventory[eachLine[0]] = eachLine[1]
-print(inventory)
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -29,6 +21,18 @@ class Application(tk.Frame):
 
     def say_hi(self):
         print("hi there, everyone!")
+
+    def retrieve_inventory(self):
+        amountFile = open("InventoryFile.txt", "r")
+        allLines = amountFile.read().split("\n")
+        inventory = {}
+        for i in allLines:
+            eachLine = i.split(";")
+            if (len(eachLine) == 2):
+                inventory[eachLine[0]] = eachLine[1]
+        print(inventory)
+
+
 
 root = tk.Tk()
 app = Application(master=root)
