@@ -1,39 +1,75 @@
-import tkinter as tk
+from tkinter import *
 
 # ReadInventory.py
 
-class Application(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.pack()
-        self.create_widgets()
+# https://docs.google.com/drawings/d/1IhOvTogBLOuWQyc_lfCRX-MFBejrGhJ5V1xRU8-HJwQ/edit?usp=sharing
 
-    def create_widgets(self):
-        self.hi_there = tk.Button(self)
-        self.hi_there["text"] = "Hello World\n(click me)"
-        self.hi_there["command"] = self.say_hi
-        self.hi_there.pack(side="top")
+class Text(Frame):
+	def __init__(self, master = None):
+		super().__init__(master)
+		self.master = master
+		self.retrieve_inventory()
 
-        self.quit = tk.Button(self, text="Exit", fg="red",
-                              command=self.master.destroy)
-        self.quit.pack(side="bottom")
-
-    def say_hi(self):
-        print("hi there, everyone!")
-
-    def retrieve_inventory(self):
-        amountFile = open("InventoryFile.txt", "r")
-        allLines = amountFile.read().split("\n")
-        inventory = {}
-        for i in allLines:
-            eachLine = i.split(";")
-            if (len(eachLine) == 2):
-                inventory[eachLine[0]] = eachLine[1]
-        print(inventory)
+	def retrieve_inventory(self):
+		amountFile = open("InventoryFile.txt", "r")
+		allLines = amountFile.read().split("\n")
+		inventory = {}
+		for i in allLines:
+		    eachLine = i.split(";")
+		    if (len(eachLine) == 2):
+		        inventory[eachLine[0]] = eachLine[1]
 
 
+def place_menu(location):
+#	 initialize drop down menu
+	OPTIONS = []
+	for i in range(15):
+		OPTIONS.append(i + 1)
+	view_value = StringVar()
+	view_value.set(OPTIONS[0])
+	drop_values = OptionMenu(location, view_value, *OPTIONS)
+	return drop_values
 
-root = tk.Tk()
-app = Application(master=root)
-app.mainloop()
+def place_label(parent, location):
+    text = Label(location, text = parent)
+    return text
+
+
+
+
+
+
+# MAIN FRAME
+root = Tk()
+root.title("Ace Campus Food Pantry")
+root.geometry("500x500")
+
+
+
+# WIDGETS
+#	labels
+num_guest_label = Label(root, text = "Guest(s)")
+
+#	buttons
+
+#	frame w text file in it
+temp_list = [
+	"beans",
+	"ratatouille",
+	"rice"
+]
+internal_frame = LabelFrame(root, text = "Welcome!", padx = 100, pady = 30)
+
+
+
+# PUSH ELEMENTS TO MAIN FRAME
+place_menu(root).grid(row = 0, column = 0)
+num_guest_label.grid(row = 0, column = 1)
+internal_frame.grid(row = 3, column = 1)
+for i in range(len(temp_list)):
+	place_menu(internal_frame).grid(row = i + 1, column = 0)
+	place_label(temp_list[i], internal_frame).grid(row = i + 1, column = 1)
+
+text_frame = Text(master = root)
+
+root.mainloop()
