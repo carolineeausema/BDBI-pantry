@@ -23,8 +23,8 @@ class Text(Frame):
 def place_menu(location):
 #	 initialize drop down menu
 	OPTIONS = []
-	for i in range(15):
-		OPTIONS.append(i + 1)
+	for i in range(16):
+		OPTIONS.append(i)
 	view_value = StringVar()
 	view_value.set(OPTIONS[0])
 	drop_values = OptionMenu(location, view_value, *OPTIONS)

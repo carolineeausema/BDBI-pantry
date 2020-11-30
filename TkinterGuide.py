@@ -1,5 +1,4 @@
 from tkinter import *
-from PIL import ImageTk, Image # used for images
 from tkinter import messagebox # used for messagebox
 import sqlite3
 
