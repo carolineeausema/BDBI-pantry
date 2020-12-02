@@ -1,16 +1,77 @@
+from tkinter import ttk
+import tkinter as tk
+
 from tkinter import *
 
 # ReadInventory.py
 
 # https://docs.google.com/drawings/d/1IhOvTogBLOuWQyc_lfCRX-MFBejrGhJ5V1xRU8-HJwQ/edit?usp=sharing
 
-class Text(Frame):
-	def __init__(self, master = None):
-		super().__init__(master)
+points = 0
+class Application:
+	def __init__(self, master):
+
 		self.master = master
 		self.retrieve_inventory()
+		master.title("Ace Campus Food Pantry")
+		master.geometry("500x500")
+
+
+		# WIDGETS
+		#	random
+		self.food_dictionary = self.retrieve_inventory()
+		self.order_dictionary = {}
+		for i in self.food_dictionary:
+			self.order_dictionary[i] = StringVar()
+			self.order_dictionary[i].set(0)
+		self.internal_frame = LabelFrame(root, text = "Order:", padx = 100, pady = 80)
+
+		#	labels
+		self.num_guest_label = Label(root, text = "Guest(s):")
+		self.num_points_label = Label(root, text = "Points: " + str(points))
+
+		#	Combobox + setting defaults
+		self.view_guest_num = StringVar()
+		self.view_guest_num.set(1)
+		self.guest_num_values = ttk.Combobox(root, textvariable = self.view_guest_num, values = (1, 2, 3, 4, 5, 6, 7), width = 1)
+
+		#	buttons
+
+
+
+
+	def push_changes(self):
+
+		points = int(self.view_guest_num.get()) * 15
+		self.guest_num_values.bind("<FocusIn>", sense_record)
+		self.num_points_label = Label(root, text = "Points: " + str(points))
+
+
+		self.num_guest_label.pack(padx = 5, pady = 10, anchor = "nw", side = "left")
+		self.guest_num_values.pack(padx = 5, pady = 10, anchor = "nw", side = "left")
+		self.num_points_label.pack(padx = 5, pady = 10, anchor = "ne", side = "right")
+
+
+		self.internal_frame.pack(padx = 5, pady = 10, expand = 1)
+
+
+		for i in self.order_dictionary:
+			food_item_values = ttk.Combobox(self.internal_frame, textvariable = self.order_dictionary[i], values = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), width = 2) # change 15 to points
+			food_item_values.grid(row = list(self.order_dictionary.keys()).index(i) + 1, column = 1)
+			val = Label(self.internal_frame, text = i)
+			val.grid(row = list(self.order_dictionary.keys()).index(i) + 1, column = 2)
+
+
+	def forget_widgets(self):
+
+		self.num_guest_label.forget()
+		self.guest_num_values.forget()
+		self.num_points_label.forget()
+		self.internal_frame.forget()
+
 
 	def retrieve_inventory(self):
+
 		amountFile = open("InventoryFile.txt", "r")
 		allLines = amountFile.read().split("\n")
 		inventory = {}
@@ -18,58 +79,17 @@ class Text(Frame):
 		    eachLine = i.split(";")
 		    if (len(eachLine) == 2):
 		        inventory[eachLine[0]] = eachLine[1]
-
-
-def place_menu(location):
-#	 initialize drop down menu
-	OPTIONS = []
-	for i in range(16):
-		OPTIONS.append(i)
-	view_value = StringVar()
-	view_value.set(OPTIONS[0])
-	drop_values = OptionMenu(location, view_value, *OPTIONS)
-	return drop_values
-
-def place_label(parent, location):
-    text = Label(location, text = parent)
-    return text
-
-
-
-
+		return inventory
 
 
 # MAIN FRAME
 root = Tk()
-root.title("Ace Campus Food Pantry")
-root.geometry("500x500")
+frame = Application(root)
 
-
-
-# WIDGETS
-#	labels
-num_guest_label = Label(root, text = "Guest(s)")
-
-#	buttons
-
-#	frame w text file in it
-temp_list = [
-	"beans",
-	"ratatouille",
-	"rice"
-]
-internal_frame = LabelFrame(root, text = "Welcome!", padx = 100, pady = 30)
-
-
+def sense_record(event): # add on produce points?
+	frame.forget_widgets()
+	frame.push_changes()
 
 # PUSH ELEMENTS TO MAIN FRAME
-place_menu(root).grid(row = 0, column = 0)
-num_guest_label.grid(row = 0, column = 1)
-internal_frame.grid(row = 3, column = 1)
-for i in range(len(temp_list)):
-	place_menu(internal_frame).grid(row = i + 1, column = 0)
-	place_label(temp_list[i], internal_frame).grid(row = i + 1, column = 1)
-
-text_frame = Text(master = root)
-
+frame.push_changes()
 root.mainloop()
