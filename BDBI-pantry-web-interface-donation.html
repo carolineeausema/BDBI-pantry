@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Food Pantry Deposit</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  background-color: #373A36;
+  padding: 30px;
+  text-align: center;
+  font-size: 25px;
+  color: white;
+}
+
+section {
+  display: -webkit-flex;
+  display: flex;
+}
+
+nav {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background: #CEB888;
+  padding: 20px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* adjusts style for main section of food entry system */
+article {
+  -webkit-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+  background-color: #9D968D;
+  padding: 10px;
+  padding-bottom: 100px;
+}
+
+
+footer {
+  background-color: #373A36;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  section {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+<body id="mainpage">
+
+<header>
+  <h2>Ace Food Pantry Management</h2>
+</header>
+
+<section>
+  	<nav>
+    	<ul>
+
+     	<script>
+
+     		//take in array items 
+     		var pantryItems = ["apple", "orange", "cherry", "beans"];
+     		//above array will be changed
+
+     		document.getElementById("mainpage").addEventListener("click", adjustTotal);
+     		function adjustTotal() {
+     			var total = 0;
+
+     			for (var i = 0; i < pantryItems.length; i++) {
+     				total -= -1 * document.getElementById(pantryItems[i]).value;
+     			}	
+     			
+     			document.getElementById("total").innerHTML = total;
+     			
+     		}
+     	</script>
+
+     	<br>
+      	<li>Total</li>
+      	<li id="total"></li>
+    	</ul>
+  	</nav>
+  
+   <article id="itemlist">
+   	<h3>Enter Values for Item Deposit</h3>
+
+   	<script>
+
+ 			//take in array items 
+   		   	var pantryItems = ["apple", "orange", "cherry", "beans"];
+   		   	//above array will be changed
+
+   			pantryItems.forEach(myFunction);
+   			function myFunction(item, index) {
+   				document.getElementById("itemlist").innerHTML += item + "<br>"; 
+   				var myParent = document.getElementById("itemlist");
+
+   				//Create array of options to be added
+   				var array = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+
+   				//Create and append select list
+   				var selectList = document.createElement("select");
+   				selectList.id = item;
+   				myParent.appendChild(selectList);
+
+   				//Create and append the options
+
+   				for (var i = 0; i < array.length; i++) {
+   					var option = document.createElement("option");
+   					option.value = array[i];
+   					option.text = array[i];
+   					selectList.appendChild(option);
+   				}
+
+   				document.getElementById("itemlist").innerHTML += "<br>"; 
+   			}
+   	</script>
+
+   </article>
+
+</section>
+
+
+<footer>
+	<a href="C:\Users\isaac\HTML-projects\BDBI-pantry-web-interface.html" target="_blank" style="color: white">Click to Record a Withdraw</a>
+
+  <br>
+  <br>
+
+	<form>
+		<!-- add in functionality to send to flask -->
+		<input type="submit">	
+	</form>
+</footer>
+
+</body>
+</html>
