@@ -7,65 +7,70 @@
 <style>
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
 }
 
 header {
-  background-color: #373A36;
-  padding: 30px;
-  text-align: center;
-  font-size: 25px;
-  color: white;
+	background-color: #373A36;
+	padding: 30px;
+	text-align: center;
+	font-size: 25px;
+	color: white;
 }
 
 section {
-  display: -webkit-flex;
-  display: flex;
+	display: -webkit-flex;
+	display: flex;
 }
 
 nav {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  background: #CEB888;
-  padding: 20px;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    background: #CEB888;
+    padding: 20px;
 }
 
 nav ul {
-  list-style-type: none;
-  padding: 0;
+    list-style-type: none;
+    padding: 0;
 }
 
 /* adjusts style for main section of food entry system */
 article {
-  -webkit-flex: 3;
-  -ms-flex: 3;
-  flex: 3;
-  background-color: #9D968D;
-  padding: 10px;
-  padding-bottom: 100px;
+    -webkit-flex: 3;
+    -ms-flex: 3;
+    flex: 3;
+    background-color: #9D968D;
+    padding: 10px;
+    padding-bottom: 100px;
 }
 
 
 footer {
-  background-color: #373A36;
-  padding: 10px;
-  text-align: center;
-  color: white;
+    background-color: #373A36;
+    padding: 10px;
+    text-align: center;
+    color: white;
 }
 
 @media (max-width: 600px) {
-  section {
-    -webkit-flex-direction: column;
-    flex-direction: column;
-  }
+	section {
+		-webkit-flex-direction: column;
+    	flex-direction: column;
+  	}
 }
+
 </style>
+
 </head>
+
+
 <body id="mainpage">
 
 <header>
-  <h2>Ace Food Pantry Management</h2>
+    <h2>Ace Food Pantry Management</h2>
 </header>
 
 <section>
@@ -73,25 +78,26 @@ footer {
     	<ul>
       	<li>Enter Number of People       
       	<form>
-         <select name="dropDownNumber" id="dropdownnumber">
-            <option value = "1" selected>1</option>
-            <option value = "2" selected>2</option>
-            <option value = "3" selected>3</option>
-            <option value = "4" selected>4</option>
-            <option value = "5" selected>5</option>
-            <option value = "6" selected>6</option>
-            <option value = "7" selected>7</option>
-            <option value = "8" selected>8</option>
-            <option value = "9" selected>9</option>
-            <option value = "10" selected>10</option>
-            <option value = "11" selected>11</option>
-            <option value = "12" selected>12</option>
-            <option value = "13" selected>13</option>
-            <option value = "14" selected>14</option>
-            <option value = "15" selected>15</option>
-            <option value = "0" selected>0</option>
-         </select>
-     	</form></li>
+      		<select name="dropDownNumber" id="dropdownnumber">
+      			<option value = "1" selected>1</option>
+	            <option value = "2" selected>2</option>
+	            <option value = "3" selected>3</option>
+	            <option value = "4" selected>4</option>
+	            <option value = "5" selected>5</option>
+	            <option value = "6" selected>6</option>
+	            <option value = "7" selected>7</option>
+	            <option value = "8" selected>8</option>
+	            <option value = "9" selected>9</option>
+	            <option value = "10" selected>10</option>
+	            <option value = "11" selected>11</option>
+	            <option value = "12" selected>12</option>
+	            <option value = "13" selected>13</option>
+	            <option value = "14" selected>14</option>
+	            <option value = "15" selected>15</option>
+	            <option value = "0" selected>0</option>
+         	</select>
+     	</form>
+     	</li>
 
      	<script>
 
@@ -120,47 +126,45 @@ footer {
      	</script>
 
      	<br>
+      	
       	<li>Points Left</li>
+      	
       	<li id="total"></li>
+    	
     	</ul>
   	</nav>
   
-   <article id="itemlist">
-   	<h3>Enter Values For Item Withdrawl</h3>
+  	<article id="itemlist">
+  		<h3>Enter Values For Item Withdrawl</h3>
 
-   	<script>
+  		<script>
+	   	  	//take in array items 
+	   	  	var pantryItems = ["apple", "orange", "cherry", "beans"];
+	   		//above array will be changed
 
- 			//take in array items 
-   		   	var pantryItems = ["apple", "orange", "cherry", "beans"];
-   		   	//above array will be changed
+			pantryItems.forEach(myFunction);
+			function myFunction(item, index) {
+				document.getElementById("itemlist").innerHTML += item + "<br>"; 
+				var myParent = document.getElementById("itemlist");
 
-   			pantryItems.forEach(myFunction);
-   			function myFunction(item, index) {
-   				document.getElementById("itemlist").innerHTML += item + "<br>"; 
-   				var myParent = document.getElementById("itemlist");
+				var array = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 
-   				//Create array of options to be added
-   				var array = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+				var numbList = document.createElement("select");
+				numbList.id = item;
+				myParent.appendChild(numbList);
 
-   				//Create and append select list
-   				var selectList = document.createElement("select");
-   				selectList.id = item;
-   				myParent.appendChild(selectList);
+				for (var i = 0; i < array.length; i++) {
+					var option = document.createElement("option");
+					option.value = array[i];
+					option.text = array[i];
+					numbList.appendChild(option);
+				}
 
-   				//Create and append the options
+				document.getElementById("itemlist").innerHTML += "<br>"; 
+			}
+		</script>
 
-   				for (var i = 0; i < array.length; i++) {
-   					var option = document.createElement("option");
-   					option.value = array[i];
-   					option.text = array[i];
-   					selectList.appendChild(option);
-   				}
-
-   				document.getElementById("itemlist").innerHTML += "<br>"; 
-   			}
-   	</script>
-
-   </article>
+	</article>
 
 </section>
 
@@ -168,8 +172,7 @@ footer {
 <footer>
 	<a href="C:\Users\isaac\HTML-projects\BDBI-pantry-web-interface-donation.html" target="_blank" style="color: white">Click to Record a Donation</a>
 
-	<br>
-	<br>
+	<br><br>
 
 	<form>
 		<!-- add in functionality to send to flask -->
