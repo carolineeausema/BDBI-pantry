@@ -8,6 +8,7 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
 }
 
 header {
@@ -101,35 +102,30 @@ footer {
    	<h3>Enter Values for Item Deposit</h3>
 
    	<script>
+      //take in array items 
+      var pantryItems = ["apple", "orange", "cherry", "beans"];
+      //above array will be changed
 
- 			//take in array items 
-   		   	var pantryItems = ["apple", "orange", "cherry", "beans"];
-   		   	//above array will be changed
+      pantryItems.forEach(myFunction);
+      function myFunction(item, index) {
+        document.getElementById("itemlist").innerHTML += item + "<br>"; 
+        var myParent = document.getElementById("itemlist");
 
-   			pantryItems.forEach(myFunction);
-   			function myFunction(item, index) {
-   				document.getElementById("itemlist").innerHTML += item + "<br>"; 
-   				var myParent = document.getElementById("itemlist");
+        var array = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 
-   				//Create array of options to be added
-   				var array = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        var numbList = document.createElement("select");
+        numbList.id = item;
+        myParent.appendChild(numbList);
 
-   				//Create and append select list
-   				var selectList = document.createElement("select");
-   				selectList.id = item;
-   				myParent.appendChild(selectList);
+        for (var i = 0; i < array.length; i++) {
+          var option = document.createElement("option");
+          option.value = array[i];
+          option.text = array[i];
+          numbList.appendChild(option);
+        }
 
-   				//Create and append the options
-
-   				for (var i = 0; i < array.length; i++) {
-   					var option = document.createElement("option");
-   					option.value = array[i];
-   					option.text = array[i];
-   					selectList.appendChild(option);
-   				}
-
-   				document.getElementById("itemlist").innerHTML += "<br>"; 
-   			}
+        document.getElementById("itemlist").innerHTML += "<br>"; 
+      }
    	</script>
 
    </article>
