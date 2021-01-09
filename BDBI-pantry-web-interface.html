@@ -104,23 +104,26 @@ footer {
      		//take in array items 
      		var pantryItems = ["apple", "orange", "cherry", "beans"];
      		//above array will be changed
+     		var count = 0;
+     		
 
      		document.getElementById("mainpage").addEventListener("click", adjustTotal);
      		function adjustTotal() {
      			var total = 0;
+     			count++;
+
      			total = ((document.getElementById("dropdownnumber").value) * 15);
 
      			for (var i = 0; i < pantryItems.length; i++) {
      				total -= document.getElementById(pantryItems[i]).value;
      			}	
 
-     			/*
-     			if (total < 0) {
-     				alert("Error: DO NOT SUBMIT, you have entered too many items to withdraw");
+     			if (count % 2 == 0 && total < 0) {
+					alert("Error: DO NOT SUBMIT, you have entered too many items to withdraw");
+					document.getElementById("total").innerHTML = 0;
+     			} else {
+     				document.getElementById("total").innerHTML = total;
      			}
-     			*/
-     			
-     			document.getElementById("total").innerHTML = total;
      			
      		}
      	</script>
