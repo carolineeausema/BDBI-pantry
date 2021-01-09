@@ -122,7 +122,11 @@ footer {
 					alert("Error: DO NOT SUBMIT, you have entered too many items to withdraw");
 					document.getElementById("total").innerHTML = 0;
      			} else {
-     				document.getElementById("total").innerHTML = total;
+     				if (total < 0) {
+     					document.getElementById("total").innerHTML = 0;
+     				} else {
+     					document.getElementById("total").innerHTML = total;
+     				}
      			}
      			
      		}
