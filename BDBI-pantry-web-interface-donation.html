@@ -86,6 +86,8 @@ footer {
      			for (var i = 0; i < pantryItems.length; i++) {
      				total -= -1 * document.getElementById(pantryItems[i]).value;
      			}	
+
+          total -= -1 * document.getElementById("newDonationQuantity").value;
      			
      			document.getElementById("total").innerHTML = total;
      			
