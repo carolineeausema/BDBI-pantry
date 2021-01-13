@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Food Pantry Deposit</title>
+<title>Pantry Donation</title>
+<table hidden id="details">
+	<tbody>
+	    {% for item in items %}
+	        <tr><td>{{ item.content }}</td><td>{{ item.inventory }}</td></tr>
+	    {% endfor %}
+	</tbody>
+</table>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 
 body {
@@ -62,6 +70,8 @@ footer {
   }
 }
 </style>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body id="mainpage">
 
@@ -73,39 +83,15 @@ footer {
   	<nav>
     	<ul>
 
-     	<script>
-
-     		//take in array items 
-     		var pantryItems = ["apple", "orange", "cherry", "beans"];
-     		//above array will be changed
-
-     		document.getElementById("mainpage").addEventListener("click", adjustTotal);
-     		function adjustTotal() {
-     			var total = 0;
-
-     			for (var i = 0; i < pantryItems.length; i++) {
-     				total -= -1 * document.getElementById(pantryItems[i]).value;
-     			}	
-
-          total -= -1 * document.getElementById("newDonationQuantity").value;
-     			
-     			document.getElementById("total").innerHTML = total;
-     			
-     		}
-     	</script>
-
      	<br>
       	<li>Total</li>
       	<li id="total">0</li>
 
         <br>
-
-        <li>Enter a New Item to Deposit</li>
-        <li><form> <input type="text" name="newDonation"></form></li>
-
-        <li>Enter New Item Donation Quantity</li>
-        
-        <li><form> <select name="newDonationQuantity" id="newDonationQuantity">
+<!--
+        <form method="POST">
+            <input type="text" name="food_label" placeholder="Enter a new Item to Deposit">
+            <select name="food_num" id="newDonationQuantity">
             <option value = "1" selected>1</option>
               <option value = "2" selected>2</option>
               <option value = "3" selected>3</option>
@@ -122,40 +108,116 @@ footer {
               <option value = "14" selected>14</option>
               <option value = "15" selected>15</option>
               <option value = "0" selected>0</option>
-          </select></form></li>
-
+            </select>
+            <input type="submit" value="Add">
+        </form>
+-->
     	</ul>
   	</nav>
-  
+
    <article id="itemlist">
    	<h3>Enter Values for Item Deposit</h3>
 
    	<script>
-      //take in array items 
-      var pantryItems = ["apple", "orange", "cherry", "beans"];
-      //above array will be changed
+ 		//take in array items
+ 		var pantryItems = [];
+        $("table#details tr").each(function() {
+            var rowDataArray = [];
+            var actualData = $(this).find('td');
+            if (actualData.length > 0) {
+                actualData.each(function() {
+                rowDataArray.push($(this).text());
+                });
+                pantryItems.push(rowDataArray);
+            }
+        });
+        console.log(pantryItems);
+   	   	//above array will be changed
 
-      pantryItems.forEach(myFunction);
-      function myFunction(item, index) {
-        document.getElementById("itemlist").innerHTML += item + "<br>"; 
-        var myParent = document.getElementById("itemlist");
+   	   	var count = 0;
 
-        var array = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 
-        var numbList = document.createElement("select");
-        numbList.id = item;
-        myParent.appendChild(numbList);
+ 		document.getElementById("mainpage").addEventListener("click", adjustTotal);
+ 		function adjustTotal() {
+ 			var total = 0;
+ 			count++;
 
-        for (var i = 0; i < array.length; i++) {
-          var option = document.createElement("option");
-          option.value = array[i];
-          option.text = array[i];
-          numbList.appendChild(option);
-        }
+ 			total = ((document.getElementById("dropdownnumber").value) * 15);
 
-        document.getElementById("itemlist").innerHTML += "<br>"; 
-      }
+ 			for (var i = 0; i < pantryItems.length; i++) {
+ 			    if (document.getElementById(pantryItems[i]).value === "-") {
+ 			        continue;
+ 			    }
+ 				total -= document.getElementById(pantryItems[i]).value;
+ 			}
+
+ 		    for (var i = 0; i < pantryItems.length; i++) {
+ 			    if (document.getElementById(pantryItems[i]).value != 0) {   // TODO: and if it isn't equal to '-'
+ 			        document.getElementById(pantryItems[i][0]).value = document.getElementById(pantryItems[i]).value;
+                    //document.getElementById("sdfsdf").value = "Hello World";
+                    console.log(pantryItems[i][0]);
+ 			    }
+ 			}
+
+ 			if (count % 2 == 0 && total < 0) {
+				alert("Error: DO NOT SUBMIT, you have entered too many items to withdraw");
+				document.getElementById("total").innerHTML = 0;
+ 			} else {
+ 				if (total < 0) {
+ 					document.getElementById("total").innerHTML = 0;
+ 				} else {
+ 					document.getElementById("total").innerHTML = total;
+ 				}
+ 			}
+ 		}
+
+ 	    document.getElementById("mainpage").addEventListener("click", submit);
+        function submit() {
+ 		    for (var i = 0; i < pantryItems.length; i++) {
+ 			    if (document.getElementById(pantryItems[i]).value != 0) {   // TODO: and if it isn't equal to '-'
+ 			        document.getElementById(pantryItems[i][0]).value = document.getElementById(pantryItems[i]).value;
+                    console.log(pantryItems[i][0]);
+ 			    }
+ 			}
+ 		}
+
+   		pantryItems.forEach(myFunction);
+   		function myFunction(item, index) {
+   			//document.getElementById("itemlist").innerHTML += item;
+   			document.getElementById("itemlist").innerHTML += item[0] + "<br>";
+   			var myParent = document.getElementById("itemlist");
+
+   			//Create array of options to be added
+   			var array = [];
+   			if (item[1] == 0) {
+   			    array.push("-");
+   			}
+   			creating_options: // Defining nested loop to break out of
+   			for (var i = 0; i <= item[1]; i++) {
+   			    if (i > 15) {
+   			        break creating_options;
+   			    }
+   			    array.push(i);
+   			}
+
+   			//Create and append select list
+   			var selectList = document.createElement("select");
+   			selectList.id = item;
+   			myParent.appendChild(selectList);
+
+   			//Create and append the options
+
+   			for (var i = 0; i < array.length; i++) {
+   				var option = document.createElement("option");
+   				option.value = array[i];
+   				option.text = array[i];
+   				selectList.appendChild(option);
+   			}
+   			document.getElementById("itemlist").innerHTML += "<br>";
+   		}
    	</script>
+
+   	<p id="myFunction"></p>
 
    </article>
 
@@ -163,15 +225,17 @@ footer {
 
 
 <footer>
-	<a href="C:\Users\isaac\HTML-projects\BDBI-pantry-web-interface.html" target="_blank" style="color: white">Click to Record a Withdraw</a>
+	<a href="http://acecampusfoodpantry.pythonanywhere.com/" target="_blank" style="color: white">Click to Record a Withdraw</a>
 
   <br>
   <br>
 
-	<form>
-		<!-- add in functionality to send to flask -->
-		<input type="submit">	
-	</form>
+	    <form method="POST">
+	        {% for item in items %}
+	            <textarea hidden id={{ item.content }} name={{ item.content }}>{{ item.content }}</textarea>
+            {% endfor %}
+            <input id="submit" type="submit" value="Submit">
+        </form>
 </footer>
 
 </body>
