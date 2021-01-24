@@ -189,11 +189,9 @@ footer {
 
    			//Create array of options to be added
    			var array = [];
-   			if (item[1] == 0) {
-   			    array.push("-");
-   			}
+
    			creating_options: // Defining nested loop to break out of
-   			for (var i = 0; i <= item[1]; i++) {
+   			for (var i = 0; i <= 15; i++) {
    			    if (i > 15) {
    			        break creating_options;
    			    }
@@ -215,6 +213,29 @@ footer {
    			}
    			document.getElementById("itemlist").innerHTML += "<br>";
    		}
+   		function copy() {
+			    var input = document.createElement('textarea');
+
+              	var copyText = "";
+
+              	for (var i = 0; i < pantryItems.length; i++) {
+              	    if(!(String(document.getElementById(pantryItems[i]).value) === "0")) {
+    					copyText += String(pantryItems[i]).substring(0, String(pantryItems[i]).indexOf(","))
+    					+ ": " + document.getElementById(pantryItems[i]).value + ", ";
+              	    }
+				}
+
+				if(copyText.substring(copyText.length - 2) === ", ") {
+				    copyText = copyText.substring(0, copyText.length - 2);
+				}
+
+			    input.innerHTML = copyText;
+			    document.body.appendChild(input);
+			    input.select();
+			    var result = document.execCommand('copy');
+			    document.body.removeChild(input);
+			    return result;
+			}
    	</script>
 
    	<p id="myFunction"></p>
@@ -234,7 +255,7 @@ footer {
 	        {% for item in items %}
 	            <textarea hidden id={{ item.content }} name={{ item.content }}>{{ item.content }}</textarea>
             {% endfor %}
-            <input id="submit" type="submit" value="Submit">
+            <input id="submit" type="submit" value="Submit" onclick="copy()">
         </form>
 </footer>
 
