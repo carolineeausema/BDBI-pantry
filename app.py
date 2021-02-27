@@ -29,11 +29,11 @@ def index():
         return render_template("BDBI-pantry-web-interface.html", items=Item.query.all())
 
     for i in Item.query.all(): # in all of the food data
-        if (i.content != "test food"): # other than "test food" because there's a space in its name
+        if (request.form[i.content] != "-"): # other than "test food" because there's a space in its name
             if (request.form[i.content] != i.content): # we want the textform that was changed to the number to be withdrawn
                 i.inventory = i.inventory - int(request.form[i.content])
                 db.session.commit()
-    return redirect(url_for('index'))
+    return render_template("BDBI-pantry-web-interface.html", items=Item.query.all())
 
 
 @app.route('/donation', methods=["GET", "POST"])
@@ -41,16 +41,22 @@ def donate():
     if request.method == "GET":
         return render_template("BDBI-pantry-web-interface-donation.html", items=Item.query.all())
 
-#    if (request.form["food_label"] != "" and request.form["food_num"] != ""):
-#        item = Item(content=request.form["food_label"], inventory=request.form["food_num"])
-#        db.session.add(item)
-#        db.session.commit()
-
-    for i in Item.query.all(): # in all of the food data
-        if (i.content != "test food"): # other than "test food" because there's a space in its name
-            if (request.form[i.content] != i.content): # we want the textform that was changed to the number to be withdrawn
-                i.inventory = i.inventory + int(request.form[i.content])
-                db.session.commit()
+    if request.method == "POST":
+        for i in Item.query.all(): # in all of the food data
+            if (i.content != "test food"): # other than "test food" because there's a space in its name
+                if (request.form[i.content] != i.content): # we want the textform that was changed to the number to be withdrawn
+                    i.inventory = i.inventory + int(request.form[i.content])
+                    db.session.commit()
+        numnew = str(request.form["numnew"])
+        while ('/' in numnew):
+            if (request.form[numnew[0 : numnew.index('/')]].isnumeric()):
+                item = Item(content = numnew[0 : numnew.index('/')], inventory = int(request.form[numnew[0 : numnew.index('/')]]))
+            else:
+                item = Item(content = numnew[0 : numnew.index('/')], inventory = 0)
+            db.session.add(item)
+            db.session.commit()
+            numnew = numnew[numnew.index('/') + 1:]
+            break
     return redirect(url_for('donate'))
 
 
@@ -59,15 +65,21 @@ def test():
     if request.method == "GET":
         return render_template("base.html", items=Item.query.all())
 
-    #if (request.form["food_label"] != "" and request.form["food_num"] != ""):
-    #    item = Item(content=request.form["food_label"], inventory=request.form["food_num"])
-    #    db.session.add(item)
-    #    db.session.commit()
-    #    return redirect(url_for('test'))
-
-    for i in Item.query.all(): # in all of the food data
-        if (i.content != "test food"): # other than "test food" because there's a space in its name
-            if (request.form[i.content] != i.content): # we want the textform that was changed to the number to be withdrawn
-                i.inventory = i.inventory - int(request.form[i.content])
-                db.session.commit()
+    if request.method == "POST":
+        for i in Item.query.all(): # in all of the food data
+            if (i.content != "test food"): # other than "test food" because there's a space in its name
+                if (request.form[i.content] != i.content): # we want the textform that was changed to the number to be withdrawn
+                    i.inventory = i.inventory + int(request.form[i.content])
+                    db.session.commit()
+        numnew = str(request.form["numnew"])
+        while ('/' in numnew):
+            if (request.form[numnew[0 : numnew.index('/')]].isnumeric()):
+                print("sldkjfslkdjf " + numnew[0 : numnew.index('/')])
+                item = Item(content = numnew[0 : numnew.index('/')], inventory = int(request.form[numnew[0 : numnew.index('/')]]))
+            else:
+                item = Item(content = numnew[0 : numnew.index('/')], inventory = 0)
+            db.session.add(item)
+            db.session.commit()
+            numnew = numnew[numnew.index('/') + 1:]
+            break
     return redirect(url_for('test'))
