@@ -16,6 +16,7 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
 }
 
 header {
@@ -75,115 +76,115 @@ footer {
 <body id="mainpage">
 
 <header>
-    <h2>Ace Food Pantry Management</h2>
+  <h2>Ace Food Pantry Management</h2>
 </header>
 
 <section>
   	<nav>
     	<ul>
+        <input type="text" id="g_name" placeholder="opt. Name">
+        <br>
+    	<br>
       	<li>Enter Number of People
       	<form>
          <select name="dropDownNumber" id="dropdownnumber">
             <option value = "1" selected>1</option>
-            <option value = "2" selected>2</option>
-            <option value = "3" selected>3</option>
-            <option value = "4" selected>4</option>
-            <option value = "5" selected>5</option>
-            <option value = "6" selected>6</option>
-            <option value = "7" selected>7</option>
-            <option value = "8" selected>8</option>
-            <option value = "9" selected>9</option>
-            <option value = "10" selected>10</option>
-            <option value = "11" selected>11</option>
-            <option value = "12" selected>12</option>
-            <option value = "13" selected>13</option>
-            <option value = "14" selected>14</option>
-            <option value = "15" selected>15</option>
-            <option value = "0" selected>0</option>
+            <option value = "2">2</option>
+            <option value = "3">3</option>
+            <option value = "4">4</option>
+            <option value = "5">5</option>
+            <option value = "6">6</option>
+            <option value = "7">7</option>
+            <option value = "8">8</option>
+            <option value = "9">9</option>
+            <option value = "10">10</option>
+            <option value = "11">11</option>
+            <option value = "12">12</option>
+            <option value = "13">13</option>
+            <option value = "14">14</option>
+            <option value = "15">15</option>
          </select>
      	</form></li>
 
      	<br>
       	<li>Points Left</li>
-      	<li id="total">0</li>
+      	<li id="total">15</li>
     	</ul>
   	</nav>
 
    <article id="itemlist">
-   	<h3>Enter Values For Item Withdrawl</h3>
-
-   	<p id="myFunction"></p>
+   	<h3>Enter Values for Item Withdrawl</h3>
 
    	<script>
+ 		//take in array items
+ 		var pantryItems = [];
+        $("table#details tr").each(function() {
+            var rowDataArray = [];
+            var actualData = $(this).find('td');
+            if (actualData.length > 0) {
+                actualData.each(function() {
+                rowDataArray.push($(this).text());
+                });
+                pantryItems.push(rowDataArray);
+            }
+        });
+        console.log(pantryItems);
+   	   	//above array will be changed
 
- 			//take in array items
- 			var pantryItems = [];
-            $("table#details tr").each(function() {
-                var rowDataArray = [];
-                var actualData = $(this).find('td');
-                if (actualData.length > 0) {
-                    actualData.each(function() {
-                    rowDataArray.push($(this).text());
-                    });
-                    pantryItems.push(rowDataArray);
-                }
-            });
-            console.log(pantryItems);
-   		   	//above array will be changed
-
-   		   	var count = 0;
+   	   	var count = 0;
 
 
-     		document.getElementById("mainpage").addEventListener("click", adjustTotal);
-     		function adjustTotal() {
-     			var total = 0;
-     			count++;
+ 		document.getElementById("mainpage").addEventListener("click", adjustTotal);
+ 		function adjustTotal() {
+ 			var total = 0;
+ 			count++;
 
-     			total = ((document.getElementById("dropdownnumber").value) * 15);
+ 			total = ((document.getElementById("dropdownnumber").value) * 15);
 
-     			for (var i = 0; i < pantryItems.length; i++) {
-     			    if (document.getElementById(pantryItems[i]).value === "-") {
-     			        continue;
-     			    }
-     				total -= document.getElementById(pantryItems[i]).value;
-     			}
+ 			for (var i = 0; i < pantryItems.length; i++) {
+ 			    if (document.getElementById(pantryItems[i]).value === "-") {
+ 			        continue;
+ 			    }
+ 				total -= document.getElementById(pantryItems[i]).value;
+ 			}
 
-     			for (var i = 0; i < pantryItems.length; i++) {
-     			    if (document.getElementById(pantryItems[i]).value != 0) {   // TODO: and if it isn't equal to '-'
-     			        document.getElementById(pantryItems[i][0]).value = document.getElementById(pantryItems[i]).value;
-                        console.log(pantryItems[i][0]);
-     			    }
-     			}
+ 		    for (var i = 0; i < pantryItems.length; i++) {
+ 			    if (document.getElementById(pantryItems[i]).value != 0) {   // TODO: and if it isn't equal to '-'
+ 			        document.getElementById(pantryItems[i][0]).value = document.getElementById(pantryItems[i]).value;
+                    //document.getElementById("sdfsdf").value = "Hello World";
+                    console.log(pantryItems[i][0]);
+ 			    }
+ 			}
 
-     			if (count % 2 == 0 && total < 0) {
-					alert("Error: DO NOT SUBMIT, you have entered too many items to withdraw");
-					document.getElementById("total").innerHTML = 0;
-     			} else {
-     				if (total < 0) {
-     					document.getElementById("total").innerHTML = 0;
-     				} else {
-     					document.getElementById("total").innerHTML = total;
-     				}
-     			}
-     		}
+ 			if (count % 2 == 0 && total < 0) {
+				alert("Error: DO NOT SUBMIT, you have entered too many items to withdraw");
+				document.getElementById("total").innerHTML = 0;
+ 			} else {
+ 				if (total < 0) {
+ 					document.getElementById("total").innerHTML = 0;
+ 				} else {
+ 					document.getElementById("total").innerHTML = total;
+ 				}
+ 			}
+ 		}
 
-     		document.getElementById("mainpage").addEventListener("click", submit);
-            function submit() {
-     		    for (var i = 0; i < pantryItems.length; i++) {
-     			    if (document.getElementById(pantryItems[i]).value != 0) {   // TODO: and if it isn't equal to '-'
-     			        document.getElementById(pantryItems[i][0]).value = document.getElementById(pantryItems[i]).value;
-                        console.log(pantryItems[i][0]);
-     			    }
-     			}
-     		}
+ 	    document.getElementById("mainpage").addEventListener("click", submit);
+        function submit() {
+ 		    for (var i = 0; i < pantryItems.length; i++) {
+ 			    if (document.getElementById(pantryItems[i]).value != 0) {   // TODO: and if it isn't equal to '-'
+ 			        document.getElementById(pantryItems[i][0]).value = document.getElementById(pantryItems[i]).value;
+                    console.log(pantryItems[i][0]);
+ 			    }
+ 			}
+ 		}
 
-   			pantryItems.forEach(myFunction);
-   			function myFunction(item, index) {
-   				//document.getElementById("itemlist").innerHTML += item;
-   				document.getElementById("itemlist").innerHTML += item[0] + "<br>";
-   				var myParent = document.getElementById("itemlist");
+   		pantryItems.forEach(myFunction);
+   		function myFunction(item, index) {
+   			//document.getElementById("itemlist").innerHTML += item;
+   			document.getElementById("itemlist").innerHTML += item[0] + "<br>";
+   			var myParent = document.getElementById("itemlist");
 
-   				//Create array of options to be added
+   			//Create array of options to be added
    				var array = [];
    				if (item[1] == 0) {
    				    array.push("-");
@@ -196,24 +197,54 @@ footer {
    				    array.push(i);
    				}
 
-   				//Create and append select list
-   				var selectList = document.createElement("select");
-   				selectList.id = item;
-   				myParent.appendChild(selectList);
+   			//Create and append select list
+   			var selectList = document.createElement("select");
+   			selectList.id = item;
+   			myParent.appendChild(selectList);
 
-   				//Create and append the options
+   			//Create and append the options
 
-   				for (var i = 0; i < array.length; i++) {
-   					var option = document.createElement("option");
-   					option.value = array[i];
-   					option.text = array[i];
-   					selectList.appendChild(option);
-   				}
-   				document.getElementById("itemlist").innerHTML += "<br>";
+   			for (var i = 0; i < array.length; i++) {
+   				var option = document.createElement("option");
+   				option.value = array[i];
+   				option.text = array[i];
+   				selectList.appendChild(option);
    			}
+   			document.getElementById("itemlist").innerHTML += "<br>";
+   		}
+   		function copy() {
+			    var input = document.createElement('textarea');
+
+              	var copyText = "";
+
+
+                if (String(document.getElementById("g_name").value != "")) {
+                    copyText += String(document.getElementById("g_name").value) + "\n";
+                }
+
+
+              	for (var i = 0; i < pantryItems.length; i++) {
+              	    if (!(String(document.getElementById(pantryItems[i]).value) === "-"))
+                  	    if(!(String(document.getElementById(pantryItems[i]).value) === "0")) {
+        					copyText += String(pantryItems[i]).substring(0, String(pantryItems[i]).indexOf(","))
+        					+ ": " + document.getElementById(pantryItems[i]).value + "\n";
+                  	    }
+				}
+
+				if(copyText.substring(copyText.length - 2) === ", ") {
+				    copyText = copyText.substring(0, copyText.length - 2);
+				}
+
+			    input.innerHTML = copyText;
+			    document.body.appendChild(input);
+			    input.select();
+			    var result = document.execCommand('copy');
+			    document.body.removeChild(input);
+			    return result;
+		}
    	</script>
 
-
+   	<p id="myFunction"></p>
 
    </article>
 
@@ -223,16 +254,17 @@ footer {
 <footer>
 	<a href="http://acecampusfoodpantry.pythonanywhere.com/donation" target="_blank" style="color: white">Click to Record a Donation</a>
 
-	<br>
-	<br>
+  <br>
+  <br>
 
-    <form method="POST">
-        {% for item in items %}
-            <textarea hidden id={{ item.content }} name={{ item.content }}>{{ item.content }}</textarea>
-        {% endfor %}
-        <input id="submit" type="submit" value="Submit">
-    </form>
+	    <form method="POST">
+	        {% for item in items %}
+	            <textarea hidden id={{ item.content }} name={{ item.content }}>{{ item.content }}</textarea>
+            {% endfor %}
+            <input id="submit" type="submit" value="Submit" onclick="copy()">
+        </form>
 </footer>
 
 </body>
 </html>
+
