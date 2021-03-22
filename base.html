@@ -1,197 +1,218 @@
-<html>
-    <head>
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    </head>
-    <body id="mainpage">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Donation</title>
+<!--Hidden table to read from db -->
+<table id="details">
+	<tbody>
+	    {% for item in items %}
+	        <tr><td>{{ item.content }}</td><td>{{ item.inventory }}</td><td>{{ item.category }}</td></tr>
+	    {% endfor %}
+	</tbody>
+</table>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-        <h1>test: looping through database</h1>
-            <h2>{food name}: {number of food item in inventory}</h2>
 
+
+<style>
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+}
+
+header {
+  background-color: #373A36;
+  padding: 30px;
+  text-align: center;
+  font-size: 25px;
+  color: white;
+}
+
+section {
+  display: -webkit-flex;
+  display: flex;
+}
+
+nav {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background: #CEB888;
+  padding: 20px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* adjusts style for main section of food entry system */
+article {
+  -webkit-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+  background-color: #9D968D;
+  padding: 10px;
+  padding-bottom: 100px;
+}
+
+
+footer {
+  background-color: #373A36;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  section {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+}
+</style>
+
+
+
+</head>
+
+
+
+
+
+
+<body id="mainpage">
+
+<header>
+  <h2>Ace Food Pantry Management</h2>
+</header>
+
+<section> <!-- Adding a new food item -->
+  	<nav>
+    	<ul>
+            <input type="text" id="food_label" placeholder="New Item">
+            <button id="addbutton" onclick="add()">Add</button>
+    	</ul>
+  	</nav>
+
+   <article id="itemlist">
+       	<h3>Enter Values for Item Deposit</h3>
+       	<p id="pushPantryItems"></p> <!-- Calls function that creates menu elements -->
+   </article>
+</section>
+
+
+<footer>
+	<a href="http://acecampusfoodpantry.pythonanywhere.com/" target="_blank" style="color: white">Click to Record a Withdraw</a>
+
+    <form method="POST"> <!-- Hidden table that adjusts to menu changes/clicks -->
+        <article id="textarealist"></article>
+            <textarea id="numnew" name="numnew"></textarea>
             {% for item in items %}
-                <p>{{ item.content }}: {{ item.inventory }}</p>
+                <textarea id={{ item.content }} name={{ item.content }}>{{ item.content }}</textarea>
+                <textarea id={{ item.content }} + "cat" name={{ item.content }}>{{ item.content }}</textarea>
             {% endfor %}
-
+        </article>
         <br>
-        <br>
-        <hr>
-        <br>
-        <br>
-
-        <h1>test: submitting a new food item to the database</h1>
-            <h2></h2>
-
-<!--
-            <form method="POST">
-                <textarea name="food_label" placeholder="food name"></textarea>
-                <textarea name="food_num", placeholder="number of food items"></textarea>
-                <input type="submit" value="Add to db">
-            </form>
--->
-        <br>
-        <br>
-        <hr>
-        <br>
-        <br>
-
-        <h1>test: copy/paste functionality</h1>
-
-            <!-- The text field -->
-            <input type="text" value="Hello World" id="myInput">
-
-            <!-- The button used to copy the text -->
-            <button onclick="copy()">Copy text</button>
-
-        <br>
-        <br>
-        <hr>
-        <br>
-        <br>
-
-        <h1>test: convert an html table into a javascript array</h1>
-
-        	<table id="details">
-        		<tbody>
-        		    {% for item in items %}
-        		        <tr><td>{{ item.content }}</td><td>{{ item.inventory }}</td></tr>
-        		    {% endfor %}
-        		</tbody>
-        	</table>
-
-        <br>
-        <br>
-        <hr>
-        <br>
-        <br>
-
-        <h1>test: copy order list in groupme format</h1>
-
-        <br>
-        <br>
-        <hr>
-        <br>
-        <br>
-
-        <h1>test: subtract food items for order</h1>
-
-            <article id="itemlist"></article
-
-            <p id="myFunction"></p>
-
-            <p id="sdfsdf"></p>
-
-		    <form method="POST">
-		        {% for item in items %}
-		            <textarea id={{ item.content }} name={{ item.content }}>{{ item.content }}</textarea>
-                {% endfor %}
-                <input id="submit" type="submit" value="Submit">
-            </form>
-
-        <script>
-
-            function copy() {
-              /* Get the text field */
-              var copyText = document.getElementById("myInput");
-
-              /* Select the text field */
-              copyText.select();
-              copyText.setSelectionRange(0, 99999); /* For mobile devices */
-
-              /* Copy the text inside the text field */
-              document.execCommand("copy");
-
-              /* Alert the copied text */
-              /* alert("Copied the text: " + copyText.value); */
-            }
-
-                 		//take in array items
-     		var pantryItems = [];
-            $("table#details tr").each(function() {
-                var rowDataArray = [];
-                var actualData = $(this).find('td');
-                if (actualData.length > 0) {
-                    actualData.each(function() {
-                    rowDataArray.push($(this).text());
-                    });
-                    pantryItems.push(rowDataArray);
-                }
-            });
-            //console.log(pantryItems);
-       	   	//above array will be changed
-
-       	   	var count = 0;
+        <input id="submit" type="submit" value="Submit" onclick="copy()">
+    </form>
+</footer>
 
 
-     		document.getElementById("mainpage").addEventListener("click", adjustTotal);
-     		function adjustTotal() {
-     			var total = 0;
-     			count++;
+   	<script>
+// Read's hidden table from db items, put into array
+var pantryItems = [];
+$("table#details tr").each(function() {
+    var rowDataArray = [];
+    var actualData = $(this).find('td');
+    if (actualData.length > 0) {
+        actualData.each(function() {
+            rowDataArray.push($(this).text());
+        });
+        pantryItems.push(rowDataArray);
+    }
+});
 
-     			//total = ((document.getElementById("dropdownnumber").value) * 15);
+// Takes new item, adds to list of menu elements
+function add() {
+    rowDataArray = [document.getElementById("food_label").value, 0]
+    pantryItems.push(rowDataArray)
+    pushPantryItems(rowDataArray, 0);
+    var hidden_article = document.getElementById("textarealist");
+    var newTextArea = document.createElement("TEXTAREA");
+    var text = document.createTextNode(document.getElementById("food_label").value);
+    newTextArea.appendChild(text);
+    newTextArea.setAttribute("id", document.getElementById("food_label").value);
+    newTextArea.setAttribute("name", document.getElementById("food_label").value);
+    hidden_article.appendChild(newTextArea);
+    var prevNum = document.getElementById("numnew").value;
+    document.getElementById("numnew").value = prevNum + document.getElementById("food_label").value + "/";
+}
 
-     			for (var i = 0; i < pantryItems.length; i++) {
-     			    if (document.getElementById(pantryItems[i]).value === "-") {
-     			        continue;
-     			    }
-     				total -= document.getElementById(pantryItems[i]).value;
-     			}
+document.getElementById("mainpage").addEventListener("click", submit);
+function submit() { // Represents submit button functionality & adjusts hidden textboxes to menu value
+    for (var i = 0; i < pantryItems.length; i++) {
+        if (document.getElementById(pantryItems[i]).value != 0)
+ 	        document.getElementById(pantryItems[i][0]).value = document.getElementById(pantryItems[i]).value;
+ 	}
+ }
 
-     		    for (var i = 0; i < pantryItems.length; i++) {
-     			    if (document.getElementById(pantryItems[i]).value != 0) {   // TODO: and if it isn't equal to '-'
-     			        document.getElementById(pantryItems[i][0]).value = document.getElementById(pantryItems[i]).value;
-                        //document.getElementById("sdfsdf").value = "Hello World";
-                        console.log(pantryItems[i][0]);
-     			    }
-     			}
-     		}
+pantryItems.forEach(pushPantryItems);
+function pushPantryItems(current_item, index) {
+    document.getElementById("itemlist").innerHTML += current_item[0] + "<br>"; // add food name and menu box for each item
+    var article_name = document.getElementById("itemlist");
+    var menu_numbers = []; // Create array of menu numbers to be added
+    var category_options = ["Perishables", "Non-Perishables"]
+    creating_options:
+    for (var i = 0; i <= 15; i++) {
+       if (i > 15)
+           break creating_options;
+       menu_numbers.push(i);
+    }
+    // Create and append select menu element
+    var selectList = document.createElement("select");
+    selectList.id = current_item;
+    article_name.appendChild(selectList);
+    // Create and append the options
+    for (var i = 0; i < menu_numbers.length; i++) {
+        var option = document.createElement("option");
+        option.value = menu_numbers[i];
+        option.text = menu_numbers[i];
+        selectList.appendChild(option);
+    }
 
-            document.getElementById("submit").addEventListener("click", submit);
-            function submit() {
-     		    for (var i = 0; i < pantryItems.length; i++) {
-     			    if (document.getElementById(pantryItems[i]).value != 0) {   // TODO: and if it isn't equal to '-'
-     			        document.getElementById(pantryItems[i][0]).value = document.getElementById(pantryItems[i]).value;
-                        document.getElementById("sdfsdf").value = "Hello World";
-                        console.log(pantryItems[i][0]);
-     			    }
-     			}
+        // Create and append select category element
+    var cat_list = document.createElement("select");
+    cat_list.id = current_item + "category";
+    article_name.appendChild(cat_list);
+    // Create and append the options
+    if (current_item[2] == 2) {
+        for (var i = 0; i < category_options.length; i++) {
+            var option = document.createElement("option");
+            option.value = category_options[i];
+            option.text = category_options[i];
+            cat_list.appendChild(option);
+        }
+    } else {
+        for (var i = category_options.length - 1; i >= 0; i--) {
+            var option = document.createElement("option");
+            option.value = category_options[i];
+            option.text = category_options[i];
+            cat_list.appendChild(option);
+        }
+    }
 
-     		}
+    if (current_item.pantry_category)
+        cat_list.value = current_item.pantry_category;
+    else
+        cat_list.value = "SELECT";
 
-       		pantryItems.forEach(myFunction);
-       		function myFunction(item, index) {
-       			//document.getElementById("itemlist").innerHTML += item;
-       			document.getElementById("itemlist").innerHTML += item[0] + "<br>";
-       			var myParent = document.getElementById("itemlist");
-
-       			//Create array of options to be added
-       			var array = [];
-       			if (item[1] == 0) {
-       			    array.push("-");
-       			}
-       			creating_options: // Defining nested loop to break out of
-       			for (var i = 0; i <= item[1]; i++) {
-       			    if (i > 15) {
-       			        break creating_options;
-       			    }
-       			    array.push(i);
-       			}
-
-       			//Create and append select list
-       			var selectList = document.createElement("select");
-       			selectList.id = item;
-       			myParent.appendChild(selectList);
-
-       			//Create and append the options
-
-       			for (var i = 0; i < array.length; i++) {
-       				var option = document.createElement("option");
-       				option.value = array[i];
-       				option.text = array[i];
-       				selectList.appendChild(option);
-       			}
-       			document.getElementById("itemlist").innerHTML += "<br>";
-       		}
-        </script>
-    </body>
+    document.getElementById("itemlist").innerHTML += "<br>";
+}
+   	</script>
+</body>
 </html>
